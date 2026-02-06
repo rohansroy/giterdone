@@ -383,7 +383,6 @@ const SecurityPage: React.FC = () => {
                       className="input-soft"
                       placeholder="Enter your current password"
                       disabled={passwordChangeLoading}
-                      autoComplete="current-password"
                       required
                       autoFocus
                     />
@@ -400,8 +399,6 @@ const SecurityPage: React.FC = () => {
                       className="input-soft"
                       placeholder="Enter your new password"
                       disabled={passwordChangeLoading}
-                      autoComplete="new-password"
-                      passwordRules="minlength: 16; required: upper, lower, digit, special;"
                       required
                     />
                   </div>
@@ -453,8 +450,6 @@ const SecurityPage: React.FC = () => {
                       className="input-soft"
                       placeholder="Confirm your new password"
                       disabled={passwordChangeLoading}
-                      autoComplete="new-password"
-                      passwordRules="minlength: 16; required: upper, lower, digit, special;"
                       required
                     />
                   </div>

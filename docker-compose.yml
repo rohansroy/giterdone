@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: giterdone-db
+    environment:
+      POSTGRES_DB: giterdone
+      POSTGRES_USER: giterdone_user
+      POSTGRES_PASSWORD: giterdone_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U giterdone_user -d giterdone"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - giterdone-network
+
+  # Django Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: giterdone-backend
+    command: >
+      sh -c "uv run python manage.py migrate &&
+             uv run python manage.py runserver 0.0.0.0:8000"
+    environment:
+      DEBUG: "True"
+      SECRET_KEY: "django-insecure-CHANGE-THIS-TO-A-SECURE-KEY-FOR-PRODUCTION"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,backend"
+      DB_NAME: "giterdone"
+      DB_USER: "giterdone_user"
+      DB_PASSWORD: "giterdone_password"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://localhost:3000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - giterdone-network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: giterdone-frontend
+    environment:
+      VITE_API_BASE_URL: "http://localhost:8000/api"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - giterdone-network
+
+networks:
+  giterdone-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
