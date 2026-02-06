@@ -9,7 +9,6 @@ const ProfilePage: React.FC = () => {
   const { user, checkAuth } = useAuth();
   const [firstName, setFirstName] = useState(user?.first_name || '');
   const [lastName, setLastName] = useState(user?.last_name || '');
-  const [age, setAge] = useState(user?.age?.toString() || '');
   const [birthday, setBirthday] = useState(user?.birthday || '');
   const [avatarStyle, setAvatarStyle] = useState(user?.avatar_style || 'initials');
   const [error, setError] = useState('');
@@ -26,7 +25,6 @@ const ProfilePage: React.FC = () => {
       const data = {
         first_name: firstName.trim() || undefined,
         last_name: lastName.trim() || undefined,
-        age: age ? parseInt(age) : undefined,
         birthday: birthday || undefined,
         avatar_style: avatarStyle,
       };
@@ -117,37 +115,18 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label htmlFor="age" className="block text-xs font-semibold text-neutral-700 mb-2">
-                  Age
-                </label>
-                <input
-                  id="age"
-                  type="number"
-                  min="1"
-                  max="150"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  className="input-soft"
-                  placeholder="25"
-                  disabled={isLoading}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="birthday" className="block text-xs font-semibold text-neutral-700 mb-2">
-                  Birthday
-                </label>
-                <input
-                  id="birthday"
-                  type="date"
-                  value={birthday}
-                  onChange={(e) => setBirthday(e.target.value)}
-                  className="input-soft"
-                  disabled={isLoading}
-                />
-              </div>
+            <div>
+              <label htmlFor="birthday" className="block text-xs font-semibold text-neutral-700 mb-2">
+                Birthday
+              </label>
+              <input
+                id="birthday"
+                type="date"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+                className="input-soft"
+                disabled={isLoading}
+              />
             </div>
 
             <div>

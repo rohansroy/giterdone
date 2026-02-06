@@ -64,7 +64,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Profile fields (all optional)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
-    age = models.PositiveIntegerField(blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     avatar_style = models.CharField(max_length=50, blank=True, null=True, default='initials')
 

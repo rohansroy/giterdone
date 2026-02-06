@@ -79,7 +79,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'email', 'auth_method', 'totp_enabled',
-            'first_name', 'last_name', 'age', 'birthday', 'avatar_style',
+            'first_name', 'last_name', 'birthday', 'avatar_style',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'email', 'created_at', 'updated_at']
@@ -90,11 +90,10 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'age', 'birthday', 'avatar_style']
+        fields = ['first_name', 'last_name', 'birthday', 'avatar_style']
         extra_kwargs = {
             'first_name': {'required': False},
             'last_name': {'required': False},
-            'age': {'required': False},
             'birthday': {'required': False},
             'avatar_style': {'required': False},
         }
